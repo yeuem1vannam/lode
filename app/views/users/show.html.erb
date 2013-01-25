@@ -1,0 +1,48 @@
+
+<p>
+  <b>Username:</b>
+  <%= @user.username %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= @user.email %>
+</p>
+<table>
+  <tr>
+    <th>Loại hình</th>
+    <th>Số</th>
+    <th>Điểm</th>
+  </tr>
+  <% @lode.each do |l|%>
+    <tr>
+      <td><%= l.loai%></td>
+      <td><%= l.so%></td>
+      <td><%= l.diem%></td>
+    </tr>
+  <% end %>
+</table>
+<div id="lode-errors">
+</div>
+<p id="notice"><%= notice %></p>
+<%= form_for Xoso.new do |f| %>
+  <table>
+    <tr>
+      <th>ACE</th>
+      <th>_Oánh con gì?_</th>
+      <th>_Lô hay Đề ?_</th>
+      <th>_Bao nhiêu?_</th>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= f.number_field :so%></td>
+      <td><%= f.select(:loai, [['Lô', 'Lô'],['Đề','Đề']])%></td>
+      <td><%= f.number_field :diem%></td>
+    </tr>
+  </table>
+  <br/>
+  <%= f.hidden_field :user_id, value: @user.id%>
+  <%= f.submit 'Oánh !'%>
+<% end %>
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

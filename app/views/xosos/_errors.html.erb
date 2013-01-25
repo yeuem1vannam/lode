@@ -1,0 +1,7 @@
+<% if @xoso.errors.any?%>  
+  <% @xoso.errors.full_messages.to_sentence.each do |m|%>
+    <%= m%>
+    <br/>  
+  <% end %>
+<% end %>
+

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  so: 1
+  type: 
+  diem: 1
+
+two:
+  so: 1
+  type: 
+  diem: 1
