@@ -21,3 +21,21 @@
 <br />
 
 <%= link_to 'New User', new_user_path %>
+
+<br/>
+<table>
+  <tr>
+    <th>Loại</th>
+    <th>Số</th>
+    <th>Điểm</th>
+    <th>Người ghi</th>
+  </tr>
+  <tr>
+    <% @lo.each do |l|%>
+      <td>Lô</td>
+      <td><%= %></td>
+      <td></td>
+      <td></td>
+    <% end %>
+  </tr>
+</table>

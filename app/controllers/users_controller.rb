@@ -3,7 +3,8 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.all
-
+    @lo = Xoso.find_all_by_loai("De")
+    @de = Xoso.find_all_by_loai("Lo")
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
@@ -14,7 +15,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
-    @lode = @user.xosos.group(:loai)
+    @lode = @user.xosos.order(:loai)
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }

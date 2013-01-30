@@ -10,17 +10,25 @@
 </p>
 <table>
   <tr>
-    <th>Loại hình</th>
-    <th>Số</th>
-    <th>Điểm</th>
+    <th>Loại hình____</th>
+    <th>Số____</th>
+    <th>Điểm____</th>
+    <th>Thành tiền</th>
   </tr>
   <% @lode.each do |l|%>
     <tr>
-      <td><%= l.loai%></td>
+      <td><%= l.loai == "Lo" ? 'Lô' : 'Đề'%></td>
       <td><%= l.so%></td>
       <td><%= l.diem%></td>
+      <td id="thanhtien"><%= l.thanhtien%></td>
     </tr>
   <% end %>
+  <tr>
+    <td><%=@user.tongtien.nil? ? '' : 'Tổng Tiền'%></td>
+    <td></td>
+    <td style="color: red"><%= @user.tongtien%></td>
+    <td></td>
+  </tr>
 </table>
 <div id="lode-errors">
 </div>
@@ -31,18 +39,71 @@
       <th>ACE</th>
       <th>_Oánh con gì?_</th>
       <th>_Lô hay Đề ?_</th>
-      <th>_Bao nhiêu?_</th>
+      <th>_Bao nhiêu điểm ?_</th>
     </tr>
     <tr>
       <td></td>
-      <td><%= f.number_field :so%></td>
-      <td><%= f.select(:loai, [['Lô', 'Lô'],['Đề','Đề']])%></td>
-      <td><%= f.number_field :diem%></td>
+      <td>
+        Số từ 0-100
+      </td>
+      <td>
+        Chọn
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= f.text_field :so%></td>
+      <td id="loai"><%= f.select(:loai, [['Lô', 'Lo'],['Đề','De']])%></td>
+      <td id="diem"><%= f.text_field :diem%></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>
+        <li>1 điểm đề = 1.000 VNĐ</li>
+        <li>1 điểm Lô = 23.000 VNĐ</li>
+      </td>
+      <td>
+        <div style="text-align: right">Thành tiền </div>
+        <div id="money" style="color: red; font-size: bold; text-align: right;"></div>
+        <script>
+          var tinhTien = function(loai){
+            var x = 0;
+            if (loai == 'Lo') {
+              x = parseInt($('#diem input').val()) * 23000;
+            } else if (loai == 'De') {
+              x = parseInt($('#diem input').val()) * 1000;
+            };
+            if (isNaN(x)) {
+              return 'Dữ liệu nhập sai!'
+            } else {
+              return x + ' VNĐ';
+            };
+          }
+          var nhapDiem = function(){          
+            $('#diem').keyup(function(){
+                $('#money').html(tinhTien($('#loai select').val()));
+            });
+          };
+          var chonLoai = function(){
+            $('#loai select').change(function(){
+              $('#money').html(tinhTien($('#loai select').val()));
+            })
+          };
+          $(document).ready(function(){
+            nhapDiem();
+            chonLoai();
+          });
+        </script>
+      </td>
     </tr>
   </table>
   <br/>
   <%= f.hidden_field :user_id, value: @user.id%>
-  <%= f.submit 'Oánh !'%>
+  <%= f.submit 'Oánh !', style: "width: 200px;"%>
 <% end %>
+<br/>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

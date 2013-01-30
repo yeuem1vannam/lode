@@ -25,7 +25,7 @@ class XososController < ApplicationController
   # GET /xosos/new.json
   def new
     @xoso = Xoso.new
-
+    binding.pry
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @xoso }
@@ -40,13 +40,16 @@ class XososController < ApplicationController
   # POST /xosos
   # POST /xosos.json
   def create
+    params[:xoso][:thanhtien] = params[:xoso][:loai] == 'Lo' ? params[:xoso][:diem].to_i * 23000 : params[:xoso][:diem].to_i * 1000 
     @xoso = Xoso.new(params[:xoso])
     @user = User.find(params[:xoso][:user_id])
-    @lode = @user.xosos.group(:loai)
+    @lode = @user.xosos.order(:loai)
 
     respond_to do |format|
       if @xoso.save
-        format.html { 
+        @user.tongtien = @user.tongtien.nil? ? params[:xoso][:thanhtien] : @user.tongtien + params[:xoso][:thanhtien]
+        @user.save
+        format.html {
           redirect_to user_path @user
           flash[:notice] = 'Ghi xong.' 
         }

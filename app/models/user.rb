@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :email, :username
+  attr_accessible :email, :username, :tongtien
   has_many :xosos
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

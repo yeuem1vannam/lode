@@ -8,6 +8,7 @@ gem 'puma'
 gem 'sqlite3'
 gem 'pry-rails', '0.1.6'
 gem 'pry', '0.9.9.4'
+gem 'better_errors'
 
 
 # Gems used only for assets and not required
