@@ -41,17 +41,25 @@ class XososController < ApplicationController
   # POST /xosos.json
   def create
     params[:xoso][:thanhtien] = params[:xoso][:loai] == 'Lo' ? params[:xoso][:diem].to_i * 23000 : params[:xoso][:diem].to_i * 1000 
-    @xoso = Xoso.new(params[:xoso])
+    if Xoso.where("loai = ? AND user_id = ?", params[:xoso][:loai], params[:xoso][:user_id].to_i).all.map{|i| i.so}.include?(params[:xoso][:so].to_i)
+      x = Xoso.where("so = ? AND loai = ? AND user_id = ?", params[:xoso][:so].to_i, params[:xoso][:loai], params[:xoso][:user_id].to_i).first
+      x.diem = x.diem + params[:xoso][:diem].to_i
+      x.thanhtien = x.thanhtien + params[:xoso][:thanhtien]
+      stage = x.save
+    else
+      @xoso = Xoso.new(params[:xoso])
+      stage = @xoso.save
+    end
     @user = User.find(params[:xoso][:user_id])
     @lode = @user.xosos.order(:loai)
 
     respond_to do |format|
-      if @xoso.save
-        @user.tongtien = @user.tongtien.nil? ? params[:xoso][:thanhtien] : @user.tongtien + params[:xoso][:thanhtien]
+      if stage
+        @user.tongtien = @user.tinh_tong_tien
         @user.save
         format.html {
           redirect_to user_path @user
-          flash[:notice] = 'Ghi xong.' 
+          flash[:notice] = 'Ghi xong con ' + "#{params[:xoso][:loai]}" + ' so ' + "#{params[:xoso][:so]}" + ' voi ' + "#{params[:xoso][:diem]}" + ' diem.'
         }
         format.json { render json: @xoso, status: :created, location: @xoso }
       else
@@ -85,10 +93,12 @@ class XososController < ApplicationController
   # DELETE /xosos/1.json
   def destroy
     @xoso = Xoso.find(params[:id])
+    @user = User.find(params[:user_id])
     @xoso.destroy
-
+    @user.tongtien = @user.tinh_tong_tien
+    @user.save
     respond_to do |format|
-      format.html { redirect_to xosos_url }
+      format.html { redirect_to user_path @user }
       format.json { head :no_content }
     end
   end

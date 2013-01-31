@@ -13,15 +13,15 @@
   <tr>
     <td><%= user.username %></td>
     <td><%= user.email %></td>
-    <td><%= link_to 'Show', user %></td>
+    <td style="border: none"><%= link_to 'Show', user %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
-
-<%= link_to 'New User', new_user_path %>
-
+<hr/>
+<%= link_to 'New User', new_user_path, class: "button" %>
+<hr/>
 <br/>
 <table>
   <tr>
@@ -29,13 +29,54 @@
     <th>Số</th>
     <th>Điểm</th>
     <th>Người ghi</th>
+    <th>Tổng tiền </th>
   </tr>
-  <tr>
-    <% @lo.each do |l|%>
+  <% @lo.each do |l|%>
+    <tr>
       <td>Lô</td>
-      <td><%= %></td>
-      <td></td>
-      <td></td>
-    <% end %>
-  </tr>
+      <td><%= l%></td>
+      <td><%= tong_diem(l, "Lo")%></td>
+      <td>
+        <% nguoi_ghi(l, "Lo").each do |i|%>
+          <li><%= "#{i[0]}" + ' (' + "#{i[1]}" + ')'%></li>
+        <% end%>
+      </td>
+      <td style="color: red;"><%= tong_diem(l, "Lo").to_i * 23000%></td>
+    </tr>
+  <% end %>
+  <% @de.each do |l|%>
+    <tr>
+      <td>Đề</td>
+      <td><%= l%></td>
+      <td><%= tong_diem(l, "De")%></td>
+      <td>
+        <% nguoi_ghi(l, "De").each do |i|%>
+          <li><%= "#{i[0]}" + ' (' + "#{i[1]}" + ')'%></li>
+        <% end%>
+      </td>
+      <td style="color: red;"><%= tong_diem(l, "De").to_i * 1000%></td>
+    </tr>
+  <% end %>
+
 </table>
+<br/>
+<hr/>
+<br/>
+<table>
+  <tr>
+    <th>Tên người chơi</th>
+    <th>Tổng số tiền</th>
+  </tr>
+  <% @users.each do |u|%>
+  <tr>
+    <td><%= u.username%></td>
+    <td style="color: red"><%= u.tongtien%></td>
+  </tr>
+<% end %>
+</table>
+
+<style>
+  table td {
+    border: 1px solid black;
+  }
+</style>

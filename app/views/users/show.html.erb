@@ -14,6 +14,7 @@
     <th>Số____</th>
     <th>Điểm____</th>
     <th>Thành tiền</th>
+    <th></th>
   </tr>
   <% @lode.each do |l|%>
     <tr>
@@ -21,6 +22,9 @@
       <td><%= l.so%></td>
       <td><%= l.diem%></td>
       <td id="thanhtien"><%= l.thanhtien%></td>
+      <td>
+        <%= button_to "Xóa", xoso_path({:id => l.id, :user_id => l.user_id}), method: :delete, onclick: 'return confirm("Are you sure?")'%>
+      </td>
     </tr>
   <% end %>
   <tr>
@@ -37,9 +41,9 @@
   <table>
     <tr>
       <th>ACE</th>
-      <th>_Oánh con gì?_</th>
-      <th>_Lô hay Đề ?_</th>
-      <th>_Bao nhiêu điểm ?_</th>
+      <th>Oánh con gì?</th>
+      <th>Lô hay Đề ?</th>
+      <th>Bao nhiêu điểm ?</th>
     </tr>
     <tr>
       <td></td>
@@ -106,4 +110,4 @@
 <% end %>
 <br/>
 <%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<%= link_to 'Home', users_path, class: "button"%>

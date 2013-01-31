@@ -3,8 +3,8 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.all
-    @lo = Xoso.find_all_by_loai("De")
-    @de = Xoso.find_all_by_loai("Lo")
+    @lo = Xoso.find_all_by_loai("Lo").map{|s| s.so}.uniq
+    @de = Xoso.find_all_by_loai("De").map{|s| s.so}.uniq
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }

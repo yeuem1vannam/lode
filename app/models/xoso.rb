@@ -13,4 +13,12 @@ class Xoso < ActiveRecord::Base
             only_integer: true,
             greater_than: 0  
           }
+
+  def tinh_tong_tien
+    x = 0
+    Xoso.find_all_by_user_id(self.id).each do |i|
+      x = x + i.thanhtien
+    end
+    return x
+  end    
 end
